@@ -41,7 +41,7 @@ addEventHandler("onInit", function(){
 	setTimer(function(){
 		local packet = Packet();
 		packet.writeUInt8(1);
-		for(local i = 0, end = getMaxSlots(); i < end; ++i){			
+		for(local i = 0, end = getMaxSlots(); i < end; ++i){
 			packet.send(i, RELIABLE);
 
 			if(Player[i].logged == true) saveAccount(i);
@@ -150,7 +150,7 @@ addEventHandler("onPlayerChangeWeaponMode", function(pid, oldwm, newwm){
 
 addEventHandler("onPlayerMessage", function(pid, params){
 	if(Player[pid].logged == true){
-		strip(params);
+			strip(params);
 		local msgType = params.slice(0, 1);
 		local text = params.slice(1);
 		local send = getPlayerPosition(pid);
@@ -269,7 +269,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 				spawnPlayer(pid);
 				saveAccount(pid);
 						local packet = Packet();
-						packet.writeUInt8(4);		
+						packet.writeUInt8(4);
 						packet.send(pid, RELIABLE);
 			}
 		} else
@@ -293,7 +293,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 					spawnPlayer(pid);
 					loadAccount(pid);
 						local packet = Packet();
-						packet.writeUInt8(4);		
+						packet.writeUInt8(4);
 						packet.send(pid, RELIABLE);
 				} else {
 					sendMessageToPlayer(pid, 255, 0, 0, "Z³e has³o! Jeœli uwa¿asz, ¿e to b³¹d, skontaktuj siê z administratorem.");
@@ -578,7 +578,7 @@ class io.file extends file
 	constructor(fileName, mode)
 	{
 		errorMsg = null;
-	
+
 		try
 		{
 			base.constructor(fileName, mode);
@@ -590,7 +590,7 @@ class io.file extends file
 			isOpen = false;
 		}
 	}
-	
+
 	function write(text)
 	{
 		foreach (char in text)
@@ -598,14 +598,14 @@ class io.file extends file
 			writen(char, 'b');
 		}
 	}
-	
+
 	function read(type = io_type.ALL)
 	{
 		if (type == io_type.LINE)
 		{
 			local line = "";
 			local char;
-			
+
 			while (!eos() && (char = readn('b')))
 			{
 				if (char != '\n')
@@ -613,31 +613,31 @@ class io.file extends file
 				else
 					return line;
 			}
-			
+
 			return line.len() == 0 ? null : line;
 		}
 		else if (type == io_type.ALL)
 		{
 			local content = "";
 			local char;
-			
+
 			while (!eos() && (char = readn('b')))
 			{
 				content += char.tochar();
 			}
-			
+
 			return content.len() == 0 ? null : content;
 		}
-		
+
 		return null;
 	}
-	
+
 	function close()
 	{
 		base.close();
 		isOpen = false;
 	}
-	
+
 	errorMsg = null;
 	isOpen = false;
 }
@@ -652,11 +652,11 @@ Classes <- [
 			setPlayerStrength(id, 0);
 			setPlayerDexterity(id, 0);
 
-			giveItem(id, Items.id("ITAR_LEATHER_L"), 1);
+			giveItem(id, "ITAR_LEATHER_L", 1);
 
-			giveItem(id, Items.id("ITFO_MEAT"), 10);
-			giveItem(id, Items.id("ITFO_WATER"), 20);
-			giveItem(id, Items.id("ITMI_JOINT"), 3);
+			giveItem(id, "ITFO_MEAT", 10);
+			giveItem(id, "ITFO_WATER", 20);
+			giveItem(id, "ITMI_JOINT", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_TIRED.MDS"));
 		}
@@ -674,13 +674,13 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 30);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 30);
 
-			giveItem(id, Items.id("ITAR_MIL_L"), 1);
-			giveItem(id, Items.id("ITMW_1H_MIL_SWORD"), 1);
+			giveItem(id, "ITAR_MIL_L", 1);
+			giveItem(id, "ITMW_1H_MIL_SWORD", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITFO_WINE", 10);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -698,15 +698,15 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 60);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 60);
 
-			giveItem(id, Items.id("ITAR_MIL_M"), 1);
-			giveItem(id, Items.id("ITMW_1H_MIL_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_L_01"), 1);
+			giveItem(id, "ITAR_MIL_M", 1);
+			giveItem(id, "ITMW_1H_MIL_SWORD", 1);
+			giveItem(id, "ITRW_CROSSBOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -727,17 +727,17 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 75);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 75);
 
-			giveItem(id, Items.id("ITAR_PAL_M"), 1);
-			giveItem(id, Items.id("ITMW_1H_PAL_SWORD"), 1);
+			giveItem(id, "ITAR_PAL_M", 1);
+			giveItem(id, "ITMW_1H_PAL_SWORD", 1);
 
-			giveItem(id, Items.id("ITAR_MIL_M"), 1);
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITAR_MIL_M", 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITRW_BOLT", 25);
 
-			giveItem(id, Items.id("ITSC_PALLIGHT"), 3);
-			giveItem(id, Items.id("ITSC_FULLHEAL"), 3);
+			giveItem(id, "ITSC_PALLIGHT", 3);
+			giveItem(id, "ITSC_FULLHEAL", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -758,17 +758,17 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_PAL_H"), 1);
-			giveItem(id, Items.id("ITMW_1H_PAL_SWORD"), 1);
+			giveItem(id, "ITAR_PAL_H", 1);
+			giveItem(id, "ITMW_1H_PAL_SWORD", 1);
 
-			giveItem(id, Items.id("ITAR_MIL_L"), 1);
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITAR_MIL_L", 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITRW_BOLT", 25);
 
-			giveItem(id, Items.id("ITSC_PALLIGHT"), 3);
-			giveItem(id, Items.id("ITSC_FULLHEAL"), 3);
+			giveItem(id, "ITSC_PALLIGHT", 3);
+			giveItem(id, "ITSC_FULLHEAL", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -785,12 +785,12 @@ Classes <- [
 			setPlayerStrength(id, 50);
 			setPlayerDexterity(id, 50);
 
-			giveItem(id, Items.id("ITAR_NOV_L"), 1);
-			giveItem(id, Items.id("ITMW_1H_NOV_MACE"), 1);
+			giveItem(id, "ITAR_NOV_L", 1);
+			giveItem(id, "ITMW_1H_NOV_MACE", 1);
 
-			giveItem(id, Items.id("ITRU_LIGHT"), 1);
-			giveItem(id, Items.id("ITSC_FIREBOLT"), 30);
-			giveItem(id, Items.id("ITSC_FULLHEAL"), 3);
+			giveItem(id, "ITRU_LIGHT", 1);
+			giveItem(id, "ITSC_FIREBOLT", 30);
+			giveItem(id, "ITSC_FULLHEAL", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -805,16 +805,16 @@ Classes <- [
 			setPlayerMana(id, 600);
 			setPlayerMagicLevel(id, 6);
 
-			giveItem(id, Items.id("ITAR_KDF_L"), 1);
+			giveItem(id, "ITAR_KDF_L", 1);
 
-			giveItem(id, Items.id("ITRU_LIGHT"), 1);
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ICEBOLT"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITRU_SLEEP"), 1);
-			giveItem(id, Items.id("ITAR_DEMENTOR"), 1);
-			giveItem(id, Items.id("ITPO_MANA_03"), 20);
-			giveItem(id, Items.id("ITPO_SPEED"), 3);
+			giveItem(id, "ITRU_LIGHT", 1);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ICEBOLT", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITRU_SLEEP", 1);
+			giveItem(id, "ITAR_DEMENTOR", 1);
+			giveItem(id, "ITPO_MANA_03", 20);
+			giveItem(id, "ITPO_SPEED", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -829,19 +829,19 @@ Classes <- [
 			setPlayerMana(id, 1000);
 			setPlayerMagicLevel(id, 6);
 
-			giveItem(id, Items.id("ITAR_KDF_H"), 1);
-			giveItem(id, Items.id("ITMW_1H_NOV_MACE"), 1);
+			giveItem(id, "ITAR_KDF_H", 1);
+			giveItem(id, "ITMW_1H_NOV_MACE", 1);
 
-			giveItem(id, Items.id("ITRU_LIGHT"), 1);
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ICEBOLT"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITRU_SLEEP"), 1);
-			giveItem(id, Items.id("ITRU_FIRERAIN"), 1);
-			giveItem(id, Items.id("ITAR_DEMENTOR"), 1);
-			giveItem(id, Items.id("ITPO_MANA_03"), 20);
-			giveItem(id, Items.id("ITRU_INSTANTFIREBALL"), 1);
-			giveItem(id, Items.id("ITPO_SPEED"), 3);
+			giveItem(id, "ITRU_LIGHT", 1);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ICEBOLT", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITRU_SLEEP", 1);
+			giveItem(id, "ITRU_FIRERAIN", 1);
+			giveItem(id, "ITAR_DEMENTOR", 1);
+			giveItem(id, "ITPO_MANA_03", 20);
+			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
+			giveItem(id, "ITPO_SPEED", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -859,13 +859,13 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 30);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 30);
 
-			giveItem(id, Items.id("ITAR_SLD_L"), 1);
-			giveItem(id, Items.id("ITMW_1H_SWORD_L_03"), 1);
+			giveItem(id, "ITAR_SLD_L", 1);
+			giveItem(id, "ITMW_1H_SWORD_L_03", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_CHEESE"), 2);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_CHEESE", 2);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITFO_WINE", 10);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -883,15 +883,15 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 60);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 60);
 
-			giveItem(id, Items.id("ITAR_SLD_M"), 1);
-			giveItem(id, Items.id("ITMW_1H_SLD_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_L_01"), 1);
+			giveItem(id, "ITAR_SLD_M", 1);
+			giveItem(id, "ITMW_1H_SLD_SWORD", 1);
+			giveItem(id, "ITRW_CROSSBOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 12);
-			giveItem(id, Items.id("ITFO_CHEESE"), 4);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 12);
+			giveItem(id, "ITFO_CHEESE", 4);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -912,15 +912,15 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_SLD_H"), 1);
-			giveItem(id, Items.id("ITMW_SHORTSWORD4"), 1);
+			giveItem(id, "ITAR_SLD_H", 1);
+			giveItem(id, "ITMW_SHORTSWORD4", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_CHEESE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITRU_PALLIGHT"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_CHEESE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITRU_PALLIGHT", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -941,16 +941,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
-			giveItem(id, Items.id("ITMW_SCHWERT5"), 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
+			giveItem(id, "ITMW_SCHWERT5", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITRU_PALLIGHT"), 1);
-			giveItem(id, Items.id("ITRU_INSTANTFIREBALL"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITRU_PALLIGHT", 1);
+			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -971,16 +971,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_DJG_L"), 1);
-			giveItem(id, Items.id("ITMW_SCHWERT5"), 1);
+			giveItem(id, "ITAR_DJG_L", 1);
+			giveItem(id, "ITMW_SCHWERT5", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITRU_PALLIGHT"), 1);
-			giveItem(id, Items.id("ITRU_INSTANTFIREBALL"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITRU_PALLIGHT", 1);
+			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1001,15 +1001,15 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
-			giveItem(id, Items.id("ITMW_1H_VLK_DAGGER"), 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
+			giveItem(id, "ITMW_1H_VLK_DAGGER", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAR_VLK_L"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAR_VLK_L", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1030,16 +1030,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_VLK_L"), 1);
-			giveItem(id, Items.id("ITMW_1H_VLK_DAGGER"), 1);
+			giveItem(id, "ITAR_VLK_L", 1);
+			giveItem(id, "ITMW_1H_VLK_DAGGER", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITLSTORCH"), 1);
-			giveItem(id, Items.id("ITAR_VLKBABE_H"), 1);
-			giveItem(id, Items.id("ITFO_BACON"), 12);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITLSTORCH", 1);
+			giveItem(id, "ITAR_VLKBABE_H", 1);
+			giveItem(id, "ITFO_BACON", 12);
 		}
 	},
 	{
@@ -1058,16 +1058,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_SMITH"), 1);
-			giveItem(id, Items.id("ITMW_1H_MACE_L_04"), 1);
+			giveItem(id, "ITAR_SMITH", 1);
+			giveItem(id, "ITMW_1H_MACE_L_04", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITLSTORCH"), 1);
-			giveItem(id, Items.id("ITMISWORDRAW"), 100);
-			giveItem(id, Items.id("ITFO_BACON"), 12);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITLSTORCH", 1);
+			giveItem(id, "ITMISWORDRAW", 100);
+			giveItem(id, "ITFO_BACON", 12);
 		}
 	},
 	{
@@ -1086,24 +1086,24 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_SMITH"), 1);
-			giveItem(id, Items.id("ITMW_1H_BAU_AXE"), 1);
+			giveItem(id, "ITAR_SMITH", 1);
+			giveItem(id, "ITMW_1H_BAU_AXE", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITLSTORCH"), 1);
-			giveItem(id, Items.id("ITFO_BACON"), 12);
-			giveItem(id, Items.id("ITPO_SPEED"), 5);
-			giveItem(id, Items.id("ITPL_SWAMPHERB"), 3);
-			giveItem(id, Items.id("ITPL_MANA_HERB_02"), 3);
-			giveItem(id, Items.id("ITPL_HEALTH_HERB_03"), 3);
-			giveItem(id, Items.id("ITPL_DEX_HERB_01"), 3);
-			giveItem(id, Items.id("ITPL_STRENGTH_HERB_01"), 3);
-			giveItem(id, Items.id("ITPL_SPEED_HERB_01"), 3);
-			giveItem(id, Items.id("ITPL_BLUEPLANT"), 3);
-			giveItem(id, Items.id("ITMI_FLASK"), 5);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITLSTORCH", 1);
+			giveItem(id, "ITFO_BACON", 12);
+			giveItem(id, "ITPO_SPEED", 5);
+			giveItem(id, "ITPL_SWAMPHERB", 3);
+			giveItem(id, "ITPL_MANA_HERB_02", 3);
+			giveItem(id, "ITPL_HEALTH_HERB_03", 3);
+			giveItem(id, "ITPL_DEX_HERB_01", 3);
+			giveItem(id, "ITPL_STRENGTH_HERB_01", 3);
+			giveItem(id, "ITPL_SPEED_HERB_01", 3);
+			giveItem(id, "ITPL_BLUEPLANT", 3);
+			giveItem(id, "ITMI_FLASK", 5);
 		}
 	},
 	{
@@ -1122,16 +1122,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_BAU_M"), 1);
-			giveItem(id, Items.id("ITMW_1H_MACE_L_04"), 1);
+			giveItem(id, "ITAR_BAU_M", 1);
+			giveItem(id, "ITMW_1H_MACE_L_04", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_RAKE"), 1);
-			giveItem(id, Items.id("ITMI_BROOM"), 1);
-			giveItem(id, Items.id("ITMI_BRUSH"), 1);
-			giveItem(id, Items.id("ITFO_BACON"), 2);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_RAKE", 1);
+			giveItem(id, "ITMI_BROOM", 1);
+			giveItem(id, "ITMI_BRUSH", 1);
+			giveItem(id, "ITFO_BACON", 2);
 		}
 	},
 	{
@@ -1150,16 +1150,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_JUDGE"), 1);
-			giveItem(id, Items.id("ITMW_1H_VLK_DAGGER"), 1);
+			giveItem(id, "ITAR_JUDGE", 1);
+			giveItem(id, "ITMW_1H_VLK_DAGGER", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
-			giveItem(id, Items.id("ITAR_VLK_L"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
+			giveItem(id, "ITAR_VLK_L", 1);
 		}
 	},
 	{
@@ -1175,16 +1175,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 30);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 30);
 
-			giveItem(id, Items.id("ITAR_BDT_M"), 1);
-			giveItem(id, Items.id("ITMW_1H_MIL_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_BDT_M", 1);
+			giveItem(id, "ITMW_1H_MIL_SWORD", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 16);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITAR_LEATHER_L"), 1);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITRW_ARROW"), 100);
+			giveItem(id, "ITMI_JOINT", 16);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITAR_LEATHER_L", 1);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITRW_ARROW", 100);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -1202,16 +1202,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 60);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 60);
 
-			giveItem(id, Items.id("ITAR_BDT_H"), 1);
-			giveItem(id, Items.id("ITMW_1H_MIL_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_L_01"), 1);
+			giveItem(id, "ITAR_BDT_H", 1);
+			giveItem(id, "ITMW_1H_MIL_SWORD", 1);
+			giveItem(id, "ITRW_CROSSBOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 26);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITAR_LEATHER_L"), 1);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 26);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITAR_LEATHER_L", 1);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -1232,14 +1232,14 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 75);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 75);
 
-			giveItem(id, Items.id("ITAR_THORUS_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_1H_PAL_SWORD"), 1);
+			giveItem(id, "ITAR_THORUS_ADDON", 1);
+			giveItem(id, "ITMW_1H_PAL_SWORD", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITAR_LEATHER_L"), 1);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITAR_LEATHER_L", 1);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -1260,21 +1260,21 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_RAVEN_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_1H_PAL_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_H_02"), 1);
+			giveItem(id, "ITAR_RAVEN_ADDON", 1);
+			giveItem(id, "ITMW_1H_PAL_SWORD", 1);
+			giveItem(id, "ITRW_CROSSBOW_H_02", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITAR_VLK_L"), 1);
-			giveItem(id, Items.id("ITAR_MIL_L"), 1);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
-			giveItem(id, Items.id("ITSC_PALLIGHT"), 3);
-			giveItem(id, Items.id("ITSC_PALLIGHTHEAL"), 3);
-			giveItem(id, Items.id("ITSC_PALHOLYBOLT"), 3);
-			giveItem(id, Items.id("ITRU_PALFULLHEAL"), 1);
-			giveItem(id, Items.id("ITSC_FIREBOLT"), 30);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITAR_VLK_L", 1);
+			giveItem(id, "ITAR_MIL_L", 1);
+			giveItem(id, "ITRW_BOLT", 25);
+			giveItem(id, "ITSC_PALLIGHT", 3);
+			giveItem(id, "ITSC_PALLIGHTHEAL", 3);
+			giveItem(id, "ITSC_PALHOLYBOLT", 3);
+			giveItem(id, "ITRU_PALFULLHEAL", 1);
+			giveItem(id, "ITSC_FIREBOLT", 30);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
 		}
@@ -1295,23 +1295,23 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
 
-			giveItem(id, Items.id("ITAR_BLOODWYN_ADDON"), 1);
-			giveItem(id, Items.id("ITAR_BARKEEPER"), 1);
-			giveItem(id, Items.id("ITAR_KDF_H"), 1);
-			giveItem(id, Items.id("ITAR_RANGER_ADDON"), 1);
-			giveItem(id, Items.id("ITAR_DEMENTOR"), 1);
-			giveItem(id, Items.id("ITMI_INNOSEYE_MIS"), 1);
-			giveItem(id, Items.id("ITRU_LIGHT"), 1);
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ICEBOLT"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITRU_SLEEP"), 1);
-			giveItem(id, Items.id("ITRU_FIRERAIN"), 1);
-			giveItem(id, Items.id("ITRU_INSTANTFIREBALL"), 1);
-			giveItem(id, Items.id("ITPO_MANA_03"), 20);
-			giveItem(id, Items.id("ITPO_SPEED"), 3);
+			giveItem(id, "ITAR_BLOODWYN_ADDON", 1);
+			giveItem(id, "ITAR_BARKEEPER", 1);
+			giveItem(id, "ITAR_KDF_H", 1);
+			giveItem(id, "ITAR_RANGER_ADDON", 1);
+			giveItem(id, "ITAR_DEMENTOR", 1);
+			giveItem(id, "ITMI_INNOSEYE_MIS", 1);
+			giveItem(id, "ITRU_LIGHT", 1);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ICEBOLT", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITRU_SLEEP", 1);
+			giveItem(id, "ITRU_FIRERAIN", 1);
+			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
+			giveItem(id, "ITPO_MANA_03", 20);
+			giveItem(id, "ITPO_SPEED", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1329,27 +1329,27 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 30);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 30);
 
-			giveItem(id, Items.id("ITAR_LEATHER_L"), 2);
-			giveItem(id, Items.id("ITMW_1H_MIL_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_LEATHER_L", 2);
+			giveItem(id, "ITMW_1H_MIL_SWORD", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 16);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITLSTORCH"), 3);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITRW_ARROW"), 1000);
-			giveItem(id, Items.id("ITRW_BOLT"), 1000);
-			giveItem(id, Items.id("ITRW_BOW_H_01"), 1);
-			giveItem(id, Items.id("ITRW_BOW_H_02"), 1);
-			giveItem(id, Items.id("ITRW_BOW_H_03"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_02"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_03"), 1);
-			giveItem(id, Items.id("ITRW_SLD_BOW"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_H_01"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_H_02"), 1);
-			giveItem(id, Items.id("ITRW_MIL_CROSSBOW"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_M_02"), 1);
+			giveItem(id, "ITMI_JOINT", 16);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITLSTORCH", 3);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITRW_ARROW", 1000);
+			giveItem(id, "ITRW_BOLT", 1000);
+			giveItem(id, "ITRW_BOW_H_01", 1);
+			giveItem(id, "ITRW_BOW_H_02", 1);
+			giveItem(id, "ITRW_BOW_H_03", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
+			giveItem(id, "ITRW_BOW_L_02", 1);
+			giveItem(id, "ITRW_BOW_L_03", 1);
+			giveItem(id, "ITRW_SLD_BOW", 1);
+			giveItem(id, "ITRW_CROSSBOW_H_01", 1);
+			giveItem(id, "ITRW_CROSSBOW_H_02", 1);
+			giveItem(id, "ITRW_MIL_CROSSBOW", 1);
+			giveItem(id, "ITRW_CROSSBOW_M_02", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1370,18 +1370,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_OREBARON_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_1H_BLESSED_02"), 1);
+			giveItem(id, "ITAR_OREBARON_ADDON", 1);
+			giveItem(id, "ITMW_1H_BLESSED_02", 1);
 
-			giveItem(id, Items.id("ITAR_PAL_H"), 1);
-			giveItem(id, Items.id("ITAR_BARKEEPER"), 1);
-			giveItem(id, Items.id("ITRU_LIGHT"), 1);
-			giveItem(id, Items.id("ITRU_ICEBOLT"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITAR_DEMENTOR"), 1);
-			giveItem(id, Items.id("ITPO_MANA_03"), 20);
-			giveItem(id, Items.id("ITRU_INSTANTFIREBALL"), 1);
-			giveItem(id, Items.id("ITPO_SPEED"), 3);
+			giveItem(id, "ITAR_PAL_H", 1);
+			giveItem(id, "ITAR_BARKEEPER", 1);
+			giveItem(id, "ITRU_LIGHT", 1);
+			giveItem(id, "ITRU_ICEBOLT", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITAR_DEMENTOR", 1);
+			giveItem(id, "ITPO_MANA_03", 20);
+			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
+			giveItem(id, "ITPO_SPEED", 3);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1402,15 +1402,15 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_LESTER"), 1);
-			giveItem(id, Items.id("ITMW_1H_SWORD_L_03"), 1);
+			giveItem(id, "ITAR_LESTER", 1);
+			giveItem(id, "ITMW_1H_SWORD_L_03", 1);
 
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ZAP"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITFO_WATER"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ZAP", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITFO_WATER", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1431,20 +1431,20 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_MAYAZOMBIE_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_HELLEBARDE"), 1);
+			giveItem(id, "ITAR_MAYAZOMBIE_ADDON", 1);
+			giveItem(id, "ITMW_HELLEBARDE", 1);
 
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ZAP"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITMI_JOINT"), 3);
-			giveItem(id, Items.id("ITFO_SAUSAGE"), 1);
-			giveItem(id, Items.id("ITFO_WATER"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITFO_WATER"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
-			giveItem(id, Items.id("ITPO_PERM_HEALTH"), 20);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ZAP", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITMI_JOINT", 3);
+			giveItem(id, "ITFO_SAUSAGE", 1);
+			giveItem(id, "ITFO_WATER", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITFO_WATER", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
+			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1465,23 +1465,23 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_CORANGAR"), 1);
-			giveItem(id, Items.id("ITMW_2H_ORCAXE_03"), 1);
+			giveItem(id, "ITAR_CORANGAR", 1);
+			giveItem(id, "ITMW_2H_ORCAXE_03", 1);
 
-			giveItem(id, Items.id("ITRU_FIREBOLT"), 1);
-			giveItem(id, Items.id("ITRU_ZAP"), 1);
-			giveItem(id, Items.id("ITRU_WINDFIST"), 1);
-			giveItem(id, Items.id("ITRU_LIGHTHEAL"), 1);
-			giveItem(id, Items.id("ITRU_FIRESTORM"), 1);
-			giveItem(id, Items.id("ITRU_ICECUBE"), 1);
-			giveItem(id, Items.id("ITMI_JOINT"), 3);
-			giveItem(id, Items.id("ITFO_SAUSAGE"), 1);
-			giveItem(id, Items.id("ITFO_WATER"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITFO_WATER"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
-			giveItem(id, Items.id("ITPO_PERM_HEALTH"), 20);
+			giveItem(id, "ITRU_FIREBOLT", 1);
+			giveItem(id, "ITRU_ZAP", 1);
+			giveItem(id, "ITRU_WINDFIST", 1);
+			giveItem(id, "ITRU_LIGHTHEAL", 1);
+			giveItem(id, "ITRU_FIRESTORM", 1);
+			giveItem(id, "ITRU_ICECUBE", 1);
+			giveItem(id, "ITMI_JOINT", 3);
+			giveItem(id, "ITFO_SAUSAGE", 1);
+			giveItem(id, "ITFO_WATER", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITFO_WATER", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
+			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1502,16 +1502,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_XARDAS"), 1);
+			giveItem(id, "ITAR_XARDAS", 1);
 
-			giveItem(id, Items.id("ITRU_TELEPORTXARDAS"), 1);
-			giveItem(id, Items.id("ITRU_PYROKINESIS"), 1);
-			giveItem(id, Items.id("ITSC_PALHOLYBOLT"), 1);
-			giveItem(id, Items.id("ITSC_PALREPELEVIL"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
-			giveItem(id, Items.id("ITPO_PERM_HEALTH"), 20);
+			giveItem(id, "ITRU_TELEPORTXARDAS", 1);
+			giveItem(id, "ITRU_PYROKINESIS", 1);
+			giveItem(id, "ITSC_PALHOLYBOLT", 1);
+			giveItem(id, "ITSC_PALREPELEVIL", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
+			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1532,18 +1532,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 0);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 0);
 
-			giveItem(id, Items.id("ITAR_DEMENTOR"), 1);
+			giveItem(id, "ITAR_DEMENTOR", 1);
 
-			giveItem(id, Items.id("ITRU_TELEPORTXARDAS"), 1);
-			giveItem(id, Items.id("ITRU_PYROKINESIS"), 1);
-			giveItem(id, Items.id("ITSC_PALHOLYBOLT"), 1);
-			giveItem(id, Items.id("ITSC_PALREPELEVIL"), 1);
-			giveItem(id, Items.id("ITRU_ICEWAVE"), 1);
-			giveItem(id, Items.id("ITRU_SLEEP"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
-			giveItem(id, Items.id("ITPO_PERM_HEALTH"), 20);
+			giveItem(id, "ITRU_TELEPORTXARDAS", 1);
+			giveItem(id, "ITRU_PYROKINESIS", 1);
+			giveItem(id, "ITSC_PALHOLYBOLT", 1);
+			giveItem(id, "ITSC_PALREPELEVIL", 1);
+			giveItem(id, "ITRU_ICEWAVE", 1);
+			giveItem(id, "ITRU_SLEEP", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
+			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1564,34 +1564,34 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 100);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 100);
 
-			giveItem(id, Items.id("ITAR_DJG_H"), 1);
-			giveItem(id, Items.id("ITMW_2H_SPECIAL_02"), 1);
-			giveItem(id, Items.id("ITRW_BOW_H_01"), 1);
+			giveItem(id, "ITAR_DJG_H", 1);
+			giveItem(id, "ITMW_2H_SPECIAL_02", 1);
+			giveItem(id, "ITRW_BOW_H_01", 1);
 
-			giveItem(id, Items.id("ITRU_TELEPORTXARDAS"), 1);
-			giveItem(id, Items.id("ITRU_PYROKINESIS"), 1);
-			giveItem(id, Items.id("ITSC_PALHOLYBOLT"), 1);
-			giveItem(id, Items.id("ITSC_PALREPELEVIL"), 1);
-			giveItem(id, Items.id("ITRU_ICEWAVE"), 1);
-			giveItem(id, Items.id("ITRU_FULLHEAL"), 1);
-			giveItem(id, Items.id("ITRU_HARMUNDEAD"), 1);
-			giveItem(id, Items.id("ITRU_FIRERAIN"), 1);
-			giveItem(id, Items.id("ITPO_SPEED"), 10);
-			giveItem(id, Items.id("ITAT_DRAGONBLOOD"), 1);
-			giveItem(id, Items.id("ITAR_VLKBABE_M"), 1);
-			giveItem(id, Items.id("ITAR_VLK_M"), 1);
-			giveItem(id, Items.id("ITMI_RUNEBLANK"), 1);
-			giveItem(id, Items.id("ITMI_JOINT"), 20);
-			giveItem(id, Items.id("ITAT_DEMONHEART"), 1);
-			giveItem(id, Items.id("ITAT_GOBLINBONE"), 1);
-			giveItem(id, Items.id("ITRW_ARROW"), 100);
-			giveItem(id, Items.id("ITFO_BREAD"), 1);
-			giveItem(id, Items.id("ITFO_MILK"), 1);
-			giveItem(id, Items.id("ITFOMUTTONRAW"), 1);
-			giveItem(id, Items.id("ITFO_FISH"), 1);
-			giveItem(id, Items.id("ITFO_APPLE"), 1);
-			giveItem(id, Items.id("ITPO_PERM_MANA"), 20);
-			giveItem(id, Items.id("ITPO_PERM_HEALTH"), 20);
+			giveItem(id, "ITRU_TELEPORTXARDAS", 1);
+			giveItem(id, "ITRU_PYROKINESIS", 1);
+			giveItem(id, "ITSC_PALHOLYBOLT", 1);
+			giveItem(id, "ITSC_PALREPELEVIL", 1);
+			giveItem(id, "ITRU_ICEWAVE", 1);
+			giveItem(id, "ITRU_FULLHEAL", 1);
+			giveItem(id, "ITRU_HARMUNDEAD", 1);
+			giveItem(id, "ITRU_FIRERAIN", 1);
+			giveItem(id, "ITPO_SPEED", 10);
+			giveItem(id, "ITAT_DRAGONBLOOD", 1);
+			giveItem(id, "ITAR_VLKBABE_M", 1);
+			giveItem(id, "ITAR_VLK_M", 1);
+			giveItem(id, "ITMI_RUNEBLANK", 1);
+			giveItem(id, "ITMI_JOINT", 20);
+			giveItem(id, "ITAT_DEMONHEART", 1);
+			giveItem(id, "ITAT_GOBLINBONE", 1);
+			giveItem(id, "ITRW_ARROW", 100);
+			giveItem(id, "ITFO_BREAD", 1);
+			giveItem(id, "ITFO_MILK", 1);
+			giveItem(id, "ITFOMUTTONRAW", 1);
+			giveItem(id, "ITFO_FISH", 1);
+			giveItem(id, "ITFO_APPLE", 1);
+			giveItem(id, "ITPO_PERM_MANA", 20);
+			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
 		}
@@ -1612,16 +1612,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_PAL_SKEL"), 1);
-			giveItem(id, Items.id("ITMW_MEISTERDEGEN"), 1);
+			giveItem(id, "ITAR_PAL_SKEL", 1);
+			giveItem(id, "ITMW_MEISTERDEGEN", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAT_DRGSNAPPERHORN"), 1);
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAT_DRGSNAPPERHORN", 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1642,18 +1642,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 60);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 60);
 
-			giveItem(id, Items.id("ITAR_DJG_CRAWLER"), 1);
-			giveItem(id, Items.id("ITMW_2H_ORCAXE_04"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_H_01"), 1);
+			giveItem(id, "ITAR_DJG_CRAWLER", 1);
+			giveItem(id, "ITMW_2H_ORCAXE_04", 1);
+			giveItem(id, "ITRW_CROSSBOW_H_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAT_WOLFFUR"), 10);
-			giveItem(id, Items.id("ITAT_SHADOWHORN"), 1);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAT_WOLFFUR", 10);
+			giveItem(id, "ITAT_SHADOWHORN", 1);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1674,18 +1674,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_BLOODWYN_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_2H_ORCAXE_02"), 1);
-			giveItem(id, Items.id("ITRW_CROSSBOW_M_01"), 1);
+			giveItem(id, "ITAR_BLOODWYN_ADDON", 1);
+			giveItem(id, "ITMW_2H_ORCAXE_02", 1);
+			giveItem(id, "ITRW_CROSSBOW_M_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAT_WOLFFUR"), 10);
-			giveItem(id, Items.id("ITAT_TEETH"), 10);
-			giveItem(id, Items.id("ITRW_BOLT"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAT_WOLFFUR", 10);
+			giveItem(id, "ITAT_TEETH", 10);
+			giveItem(id, "ITRW_BOLT", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1706,18 +1706,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_PRISONER"), 1);
-			giveItem(id, Items.id("ITMW_1H_MISC_AXE"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_PRISONER", 1);
+			giveItem(id, "ITMW_1H_MISC_AXE", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITMI_BROOM"), 1);
-			giveItem(id, Items.id("ITAT_TEETH"), 10);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITMI_BROOM", 1);
+			giveItem(id, "ITAT_TEETH", 10);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1738,16 +1738,16 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 80);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 80);
 
-			giveItem(id, Items.id("ITAR_RAVEN_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_KRIEGSHAMMER2"), 1);
+			giveItem(id, "ITAR_RAVEN_ADDON", 1);
+			giveItem(id, "ITMW_KRIEGSHAMMER2", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITRU_PALLIGHT"), 1);
-			giveItem(id, Items.id("ITAR_GOVERNOR"), 1);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITRU_PALLIGHT", 1);
+			giveItem(id, "ITAR_GOVERNOR", 1);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1768,18 +1768,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 60);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 60);
 
-			giveItem(id, Items.id("ITAR_CORANGAR"), 1);
-			giveItem(id, Items.id("ITMW_FOLTERAXT"), 1);
-			giveItem(id, Items.id("ITRW_BOW_H_03"), 1);
+			giveItem(id, "ITAR_CORANGAR", 1);
+			giveItem(id, "ITMW_FOLTERAXT", 1);
+			giveItem(id, "ITRW_BOW_H_03", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAT_WOLFFUR"), 10);
-			giveItem(id, Items.id("ITMI_GOLDCUP"), 1);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAT_WOLFFUR", 10);
+			giveItem(id, "ITMI_GOLDCUP", 1);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1800,18 +1800,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_RANGER_ADDON"), 1);
-			giveItem(id, Items.id("ITMW_KRUMMSCHWERT"), 1);
-			giveItem(id, Items.id("ITRW_BOW_H_02"), 1);
+			giveItem(id, "ITAR_RANGER_ADDON", 1);
+			giveItem(id, "ITMW_KRUMMSCHWERT", 1);
+			giveItem(id, "ITRW_BOW_H_02", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITAT_WOLFFUR"), 10);
-			giveItem(id, Items.id("ITMI_SILVERCUP"), 1);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITAT_WOLFFUR", 10);
+			giveItem(id, "ITMI_SILVERCUP", 1);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1832,18 +1832,18 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_BARKEEPER"), 1);
-			giveItem(id, Items.id("ITMW_1H_SWORD_L_03"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_BARKEEPER", 1);
+			giveItem(id, "ITMW_1H_SWORD_L_03", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITMI_BROOM"), 1);
-			giveItem(id, Items.id("ITAT_TEETH"), 10);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITMI_BROOM", 1);
+			giveItem(id, "ITAT_TEETH", 10);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1864,19 +1864,19 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_VLK_H"), 1);
-			giveItem(id, Items.id("ITMW_KRIEGSKEULE"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_VLK_H", 1);
+			giveItem(id, "ITMW_KRIEGSKEULE", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITMI_BROOM"), 1);
-			giveItem(id, Items.id("ITAT_TEETH"), 10);
-			giveItem(id, Items.id("ITMI_GOLDNECKLACE"), 1);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITMI_BROOM", 1);
+			giveItem(id, "ITAT_TEETH", 10);
+			giveItem(id, "ITMI_GOLDNECKLACE", 1);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
@@ -1897,19 +1897,19 @@ Classes <- [
 			setPlayerSkillWeapon(id, WEAPON_BOW, 35);
 			setPlayerSkillWeapon(id, WEAPON_CBOW, 35);
 
-			giveItem(id, Items.id("ITAR_JUDGE"), 1);
-			giveItem(id, Items.id("ITMW_1H_VLK_SWORD"), 1);
-			giveItem(id, Items.id("ITRW_BOW_L_01"), 1);
+			giveItem(id, "ITAR_JUDGE", 1);
+			giveItem(id, "ITMW_1H_VLK_SWORD", 1);
+			giveItem(id, "ITRW_BOW_L_01", 1);
 
-			giveItem(id, Items.id("ITMI_JOINT"), 6);
-			giveItem(id, Items.id("ITFO_APPLE"), 2);
-			giveItem(id, Items.id("ITFO_WINE"), 10);
-			giveItem(id, Items.id("ITMI_LUTE"), 1);
-			giveItem(id, Items.id("ITMI_SEXTANT"), 1);
-			giveItem(id, Items.id("ITMI_BROOM"), 1);
-			giveItem(id, Items.id("ITAT_TEETH"), 10);
-			giveItem(id, Items.id("ITMI_GOLDNECKLACE"), 1);
-			giveItem(id, Items.id("ITRW_ARROW"), 25);
+			giveItem(id, "ITMI_JOINT", 6);
+			giveItem(id, "ITFO_APPLE", 2);
+			giveItem(id, "ITFO_WINE", 10);
+			giveItem(id, "ITMI_LUTE", 1);
+			giveItem(id, "ITMI_SEXTANT", 1);
+			giveItem(id, "ITMI_BROOM", 1);
+			giveItem(id, "ITAT_TEETH", 10);
+			giveItem(id, "ITMI_GOLDNECKLACE", 1);
+			giveItem(id, "ITRW_ARROW", 25);
 
 			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
 		}
