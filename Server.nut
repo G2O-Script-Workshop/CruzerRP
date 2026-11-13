@@ -1,3 +1,106 @@
+io <- {}
+
+enum io_type
+{
+	LINE,
+	ALL
+};
+
+class io.file extends file
+{
+	constructor(fileName, mode)
+	{
+		errorMsg = null;
+
+		try
+		{
+			base.constructor(fileName, mode);
+			isOpen = true;
+		}
+		catch (msg)
+		{
+			errorMsg = msg;
+			isOpen = false;
+		}
+	}
+
+	function write(text)
+	{
+		if (!isOpen)
+			return;
+
+		try
+		{
+			foreach (char in text)
+				writen(char, 'b');
+		}
+		catch (err)
+		{
+			errorMsg = err;
+			isOpen = false;
+		}
+	}
+
+	function read(type = io_type.ALL)
+	{
+		if (!isOpen)
+			return null;
+
+		if (type == io_type.LINE)
+		{
+			local line = "";
+			local char;
+
+			while (!eos() && (char = readn('b')))
+			{
+				if (char != '\n')
+					line += char.tochar();
+				else
+					return line;
+			}
+
+			return line.len() == 0 ? null : line;
+		}
+		else if (type == io_type.ALL)
+		{
+			local content = "";
+			local char;
+
+			while (!eos() && (char = readn('b')))
+			{
+				content += char.tochar();
+			}
+
+			return content.len() == 0 ? null : content;
+		}
+
+		return null;
+	}
+
+	function close()
+	{
+		try { base.close(); } catch (err) {}
+		isOpen = false;
+	}
+
+	errorMsg = null;
+	isOpen = false;
+}
+
+
+function parseIdAndText(params){
+	params = strip(params);
+	local space = params.find(" ");
+	if(space == null) return null;
+
+	local id = params.slice(0, space);
+	local text = strip(params.slice(space + 1));
+	if(text == "") return null;
+
+	try { id = id.tointeger(); } catch(err) { return null; }
+	return [id, text];
+}
+
 local Player = {};
 
 local bodyModel = ["HUM_BODY_NAKED0", "HUM_BODY_BABE0"];
@@ -33,15 +136,32 @@ function clearPlayer(pid){
 	Player[pid].seepm <- false;
 }
 
+local FIGHT_OVERLAYS = ["HUMANS_1HST1.MDS", "HUMANS_1HST2.MDS", "HUMANS_2HST1.MDS", "HUMANS_2HST2.MDS", "HUMANS_BOWT1.MDS", "HUMANS_BOWT2.MDS", "HUMANS_CBOWT1.MDS", "HUMANS_CBOWT2.MDS"];
+local WALK_OVERLAYS = ["HUMANS_TIRED.MDS", "HUMANS_MILITIA.MDS", "HUMANS_RELAXED.MDS", "HUMANS_MAGE.MDS"];
+
+function setWalkOverlay(pid, overlay){
+	foreach(o in WALK_OVERLAYS) removePlayerOverlay(pid, o);
+	Player[pid].walk = overlay;
+	applyPlayerOverlay(pid, overlay);
+}
+
 addEventHandler("onInit", function(){
 	print("-===========================-");
 	print("[CruzerRP: Squirrel Re-Write]");
 	print("-===========================-");
 
+	local check = io.file("database/.save_check", "w");
+	check.write("ok");
+	if(!check.isOpen)
+		print("[CruzerRP] UWAGA: brak folderu 'database'!");
+	check.close();
+
 	setTimer(function(){
 		local packet = Packet();
 		packet.writeUInt8(1);
 		for(local i = 0, end = getMaxSlots(); i < end; ++i){
+			if(!isPlayerConnected(i)) continue;
+
 			packet.send(i, RELIABLE);
 
 			if(Player[i].logged == true) saveAccount(i);
@@ -97,9 +217,9 @@ addEventHandler("onPlayerRespawn", function(pid){
 	}
 });
 
-addEventHandler("onPlayerChangeWorld", function(pid, world){
+addEventHandler("onPlayerChangeWorld", function(pid, world, waypoint){
 	if(world != "NEWWORLD\\NEWWORLD.ZEN"){
-		setPlayerWorld(pid, "NEWWORLD\\NEWWORLD.ZEN");
+		setPlayerWorld(pid, "NEWWORLD\\NEWWORLD.ZEN", "");
 		setPlayerPosition(pid, 38601.9140625, 3911.5217285156, -1280.5793457031);
 	}
 });
@@ -109,37 +229,40 @@ addEventHandler("onPlayerChangeWeaponMode", function(pid, oldwm, newwm){
 		if(newwm != WEAPONMODE_NONE){
 			if(newwm == WEAPONMODE_1HS){
 				if(getPlayerSkillWeapon(pid, WEAPON_1H) >= 30 && getPlayerSkillWeapon(pid, WEAPON_1H) < 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_1HST1.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_1HST1.MDS");
 				}
 				else if(getPlayerSkillWeapon(pid, WEAPON_1H) >= 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_1HST2.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_1HST2.MDS");
 				}
 			}
 			if(newwm == WEAPONMODE_2HS){
 				if(getPlayerSkillWeapon(pid, WEAPON_2H) >= 30 && getPlayerSkillWeapon(pid, WEAPON_2H) < 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_2HST1.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_2HST1.MDS");
 				}
 				else if(getPlayerSkillWeapon(pid, WEAPON_2H) >= 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_2HST2.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_2HST2.MDS");
 				}
 			}
 			if(newwm == WEAPONMODE_BOW){
 				if(getPlayerSkillWeapon(pid, WEAPON_BOW) >= 30 && getPlayerSkillWeapon(pid, WEAPON_BOW) < 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_BOWT1.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_BOWT1.MDS");
 				}
 				else if(getPlayerSkillWeapon(pid, WEAPON_BOW) >= 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_BOWT2.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_BOWT2.MDS");
 				}
 			}
 			if(newwm == WEAPONMODE_CBOW){
 				if(getPlayerSkillWeapon(pid, WEAPON_CBOW) >= 30 && getPlayerSkillWeapon(pid, WEAPON_CBOW) < 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_CBOWT1.MDS"));
+					applyPlayerOverlay(pid, "HUMANS_CBOWT1.MDS");
 				}
-				else if(getPlayerSkillWeapon(pid, WEAPON_BOW) >= 60){
-					applyPlayerOverlay(pid, Mds.id("HUMANS_CBOWT2.MDS"));
+				else if(getPlayerSkillWeapon(pid, WEAPON_CBOW) >= 60){
+					applyPlayerOverlay(pid, "HUMANS_CBOWT2.MDS");
 				}
 			}
-		} else applyPlayerOverlay(pid, Player[pid].walk);
+		} else {
+			foreach(o in FIGHT_OVERLAYS) removePlayerOverlay(pid, o);
+			if(Player[pid].walk != "") applyPlayerOverlay(pid, Player[pid].walk);
+		}
 	} else {
 		if(newwm != WEAPONMODE_NONE){
 			sendMessageToPlayer(pid, 255, 0, 0, "Jesteœ zbyt s³aby ¿eby walczyæ");
@@ -150,7 +273,8 @@ addEventHandler("onPlayerChangeWeaponMode", function(pid, oldwm, newwm){
 
 addEventHandler("onPlayerMessage", function(pid, params){
 	if(Player[pid].logged == true){
-			strip(params);
+		params = strip(params);
+		if(params == "") return;
 		local msgType = params.slice(0, 1);
 		local text = params.slice(1);
 		local send = getPlayerPosition(pid);
@@ -305,9 +429,9 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 			sendMessageToPlayer(pid, 255, 0, 0, "Jesteœ ju¿ zalogowany!");
 	}
 	else if(cmd == "gmsg"){
-		local msg = sscanf("s", params);
+		local msg = strip(params);
 
-		if(!msg){
+		if(msg == ""){
 			sendMessageToPlayer(pid, 255, 0, 0, "U¿yj /gmsg wiadomoœæ");
 			return;
 		}
@@ -324,7 +448,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 			sendMessageToPlayer(pid, 255, 0, 0, "Nie nale¿ysz do ¿adnej oficjalnej gildii.");
 	}
 	else if(cmd == "pm"){
-		local par = sscanf("ds", params);
+		local par = parseIdAndText(params);
 
 		if(!par){
 			sendMessageToPlayer(pid, 255, 0, 0, "U¿yj: /pm id wiadomosc");
@@ -338,7 +462,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 			sendMessageToPlayer(id, 255, 154, 0, "(PM) " + getPlayerName(pid) + "|" + pid + " >> " + msg);
 			sendMessageToPlayer(pid, 255, 68, 0, "(PM) " + getPlayerName(id) + "|" + id + " << " + msg);
 		} else
-			sendMesageToPlayer(pid, 255, 0, 0, "Ten gracz nie jest po³¹czony.");
+			sendMessageToPlayer(pid, 255, 0, 0, "Ten gracz nie jest po³¹czony.");
 
 		for(local i = 0, end = getMaxSlots(); i < end; ++i){
 			if(Player[i].seepm == true){
@@ -359,8 +483,9 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 		local headm = par[2];
 		local headtex = par[3];
 
-		if(bodym > 1 || bodytex > 12 || headm > 6 || headtex > 162){
+		if(bodym < 0 || bodym > 1 || bodytex < 0 || bodytex > 12 || headm < 0 || headm > 6 || headtex < 0 || headtex > 162){
 			sendMessageToPlayer(pid, 255, 0, 0, "U¿yj /wyglad modelCia³a(0-1), teksturaCia³a(0-12), modelG³owy(0-6), teksturaG³owy(0-162)");
+			return;
 		}
 
 			setPlayerVisual(pid, bodyModel[bodym], bodytex, headModel[headm], headtex);
@@ -378,7 +503,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 		sendMessageToPlayer(pid, 255, 255, 0, "# - Wiadomoœæ zostanie wyœwietlona jako me(ja) ");
 		sendMessageToPlayer(pid, 255, 255, 0, "/pm id/nick_gracza - Prywatna wiadomoœæ");
 		sendMessageToPlayer(pid, 255, 255, 0, "/adm wiadomoœæ - Wiadomoœæ do administratora (ujrz¹ j¹ wszyscy administratorzy online)");
-		sendMessageToPlayer(pid, 255, 255, 0, "/wyglad modelCia³a(1-2) teksturaCia³a(0-12) modelG³owy(1-7) teksturaG³owy(0-162) - Zmiana wygl¹du");
+		sendMessageToPlayer(pid, 255, 255, 0, "/wyglad modelCia³a(0-1) teksturaCia³a(0-12) modelG³owy(0-6) teksturaG³owy(0-162) - Zmiana wygl¹du");
 		sendMessageToPlayer(pid, 255, 255, 0, "/gmsg wiadomoœæ - Wiadomoœæ do gildii");
 		sendMessageToPlayer(pid, 255, 255, 0, "/zmienhaslo stareHas³o noweHas³o - zmiana has³a");
 		sendMessageToPlayer(pid, 255, 255, 0, "/m.all - Wyœwietla moderatorów oraz administratorów online");
@@ -403,7 +528,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 	}
 	else if(cmd == "m.kick"){
 		if(Player[pid].rank >= 2){
-			local par = sscanf("ds", params);
+			local par = parseIdAndText(params);
 
 			if(!par){
 				sendMessageToPlayer(pid, 255, 0, 0, "U¿yj /m.kick idgracza powód");
@@ -437,9 +562,9 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 	}
 	else if(cmd == "post"){
 		if(Player[pid].rank >= 1){
-			local msg = sscanf("s", params);
+			local msg = strip(params);
 
-			if(!msg){
+			if(msg == ""){
 				sendMessageToPlayer(pid, 255, 0, 0, "U¿yj /post wiadomoœæ");
 				return;
 			}
@@ -461,14 +586,14 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 			local id = par[0];
 			local clss = par[1];
 
-				if(clss <= Classes.len() && clss >= 0){
+				if(clss < Classes.len() && clss >= 0 && isPlayerConnected(id)){
 					sendMessageToPlayer(id, 0, 255, 0, "Twoja klasa zosta³a zamieniona na: " + Classes[clss].name);
 					sendMessageToPlayer(pid, 0, 255, 0, "Klasa gracza " + getPlayerName(id) + " zosta³a zamieniona na " + Classes[clss].name);
 
 					local packet = Packet();
 					packet.writeUInt8(2);
-					packet.send(pid, RELIABLE);
-					Player[pid].clss = clss;
+					packet.send(id, RELIABLE);
+					Player[id].clss = clss;
 				} else
 					sendMessageToPlayer(pid, 255, 0, 0, "Klasa o ID " + clss + " nie istnieje");
 
@@ -480,7 +605,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 			if(isPlayerConnected(i))
 				if(Player[i].rank >= 2){{
 					sendMessageToPlayer(i, 0, 255, 255, "Wiadomoœæ dla administratora:");
-					sendMessageToPlayer(i, 0, 255, 255, "(Adm) " + pid + "|" + getPlayerName(pid) + ":" + msg);
+					sendMessageToPlayer(i, 0, 255, 255, "(Adm) " + pid + "|" + getPlayerName(pid) + ": " + params);
 				}
 			}
 		}
@@ -544,7 +669,7 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 	else if(cmd == "kall"){
 		if(Player[pid].rank == 3){
 			for(local i = 0, end = getMaxSlots(); i < end; ++i){
-				if(isPlayerConnected(i)) kick(i);
+				if(isPlayerConnected(i)) kick(i, "");
 			}
 		}
 	}
@@ -565,83 +690,6 @@ addEventHandler("onPlayerCommand", function(pid, cmd, params){
 	}
 });
 
-io <- {}
-
-enum io_type
-{
-	LINE,
-	ALL
-};
-
-class io.file extends file
-{
-	constructor(fileName, mode)
-	{
-		errorMsg = null;
-
-		try
-		{
-			base.constructor(fileName, mode);
-			isOpen = true;
-		}
-		catch (msg)
-		{
-			errorMsg = msg;
-			isOpen = false;
-		}
-	}
-
-	function write(text)
-	{
-		foreach (char in text)
-		{
-			writen(char, 'b');
-		}
-	}
-
-	function read(type = io_type.ALL)
-	{
-		if (type == io_type.LINE)
-		{
-			local line = "";
-			local char;
-
-			while (!eos() && (char = readn('b')))
-			{
-				if (char != '\n')
-					line += char.tochar();
-				else
-					return line;
-			}
-
-			return line.len() == 0 ? null : line;
-		}
-		else if (type == io_type.ALL)
-		{
-			local content = "";
-			local char;
-
-			while (!eos() && (char = readn('b')))
-			{
-				content += char.tochar();
-			}
-
-			return content.len() == 0 ? null : content;
-		}
-
-		return null;
-	}
-
-	function close()
-	{
-		base.close();
-		isOpen = false;
-	}
-
-	errorMsg = null;
-	isOpen = false;
-}
-
 Classes <- [
 	{
 		name = "Przybysz",
@@ -658,7 +706,7 @@ Classes <- [
 			giveItem(id, "ITFO_WATER", 20);
 			giveItem(id, "ITMI_JOINT", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_TIRED.MDS"));
+			setWalkOverlay(id, "HUMANS_TIRED.MDS");
 		}
 	},
 	{
@@ -682,7 +730,7 @@ Classes <- [
 			giveItem(id, "ITLSTORCH", 3);
 			giveItem(id, "ITFO_WINE", 10);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -708,7 +756,7 @@ Classes <- [
 			giveItem(id, "ITFO_WINE", 10);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -739,7 +787,7 @@ Classes <- [
 			giveItem(id, "ITSC_PALLIGHT", 3);
 			giveItem(id, "ITSC_FULLHEAL", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -770,7 +818,7 @@ Classes <- [
 			giveItem(id, "ITSC_PALLIGHT", 3);
 			giveItem(id, "ITSC_FULLHEAL", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -792,7 +840,7 @@ Classes <- [
 			giveItem(id, "ITSC_FIREBOLT", 30);
 			giveItem(id, "ITSC_FULLHEAL", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -816,7 +864,7 @@ Classes <- [
 			giveItem(id, "ITPO_MANA_03", 20);
 			giveItem(id, "ITPO_SPEED", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -843,7 +891,7 @@ Classes <- [
 			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 			giveItem(id, "ITPO_SPEED", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -867,7 +915,7 @@ Classes <- [
 			giveItem(id, "ITLSTORCH", 3);
 			giveItem(id, "ITFO_WINE", 10);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -893,7 +941,7 @@ Classes <- [
 			giveItem(id, "ITFO_WINE", 10);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -922,7 +970,7 @@ Classes <- [
 			giveItem(id, "ITMI_SEXTANT", 1);
 			giveItem(id, "ITRU_PALLIGHT", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -952,7 +1000,7 @@ Classes <- [
 			giveItem(id, "ITRU_PALLIGHT", 1);
 			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -982,7 +1030,7 @@ Classes <- [
 			giveItem(id, "ITRU_PALLIGHT", 1);
 			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1011,7 +1059,7 @@ Classes <- [
 			giveItem(id, "ITMI_SEXTANT", 1);
 			giveItem(id, "ITAR_VLK_L", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1186,7 +1234,7 @@ Classes <- [
 			giveItem(id, "ITLSTORCH", 3);
 			giveItem(id, "ITRW_ARROW", 100);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -1213,7 +1261,7 @@ Classes <- [
 			giveItem(id, "ITLSTORCH", 3);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -1241,7 +1289,7 @@ Classes <- [
 			giveItem(id, "ITAR_LEATHER_L", 1);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -1276,7 +1324,7 @@ Classes <- [
 			giveItem(id, "ITRU_PALFULLHEAL", 1);
 			giveItem(id, "ITSC_FIREBOLT", 30);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MILITIA.MDS"));
+			setWalkOverlay(id, "HUMANS_MILITIA.MDS");
 		}
 	},
 	{
@@ -1313,7 +1361,7 @@ Classes <- [
 			giveItem(id, "ITPO_MANA_03", 20);
 			giveItem(id, "ITPO_SPEED", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1351,7 +1399,7 @@ Classes <- [
 			giveItem(id, "ITRW_MIL_CROSSBOW", 1);
 			giveItem(id, "ITRW_CROSSBOW_M_02", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1383,7 +1431,7 @@ Classes <- [
 			giveItem(id, "ITRU_INSTANTFIREBALL", 1);
 			giveItem(id, "ITPO_SPEED", 3);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1412,7 +1460,7 @@ Classes <- [
 			giveItem(id, "ITFO_WATER", 1);
 			giveItem(id, "ITPO_PERM_MANA", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1446,7 +1494,7 @@ Classes <- [
 			giveItem(id, "ITPO_PERM_MANA", 20);
 			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1483,7 +1531,7 @@ Classes <- [
 			giveItem(id, "ITPO_PERM_MANA", 20);
 			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1513,7 +1561,7 @@ Classes <- [
 			giveItem(id, "ITPO_PERM_MANA", 20);
 			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1545,7 +1593,7 @@ Classes <- [
 			giveItem(id, "ITPO_PERM_MANA", 20);
 			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1593,7 +1641,7 @@ Classes <- [
 			giveItem(id, "ITPO_PERM_MANA", 20);
 			giveItem(id, "ITPO_PERM_HEALTH", 20);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_MAGE.MDS"));
+			setWalkOverlay(id, "HUMANS_MAGE.MDS");
 		}
 	},
 	{
@@ -1623,7 +1671,7 @@ Classes <- [
 			giveItem(id, "ITAT_DRGSNAPPERHORN", 1);
 			giveItem(id, "ITAR_GOVERNOR", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1655,7 +1703,7 @@ Classes <- [
 			giveItem(id, "ITAT_SHADOWHORN", 1);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1687,7 +1735,7 @@ Classes <- [
 			giveItem(id, "ITAT_TEETH", 10);
 			giveItem(id, "ITRW_BOLT", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1719,7 +1767,7 @@ Classes <- [
 			giveItem(id, "ITAT_TEETH", 10);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1749,7 +1797,7 @@ Classes <- [
 			giveItem(id, "ITRU_PALLIGHT", 1);
 			giveItem(id, "ITAR_GOVERNOR", 1);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1781,7 +1829,7 @@ Classes <- [
 			giveItem(id, "ITMI_GOLDCUP", 1);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1813,7 +1861,7 @@ Classes <- [
 			giveItem(id, "ITMI_SILVERCUP", 1);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1845,7 +1893,7 @@ Classes <- [
 			giveItem(id, "ITAT_TEETH", 10);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1878,7 +1926,7 @@ Classes <- [
 			giveItem(id, "ITMI_GOLDNECKLACE", 1);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	},
 	{
@@ -1911,7 +1959,7 @@ Classes <- [
 			giveItem(id, "ITMI_GOLDNECKLACE", 1);
 			giveItem(id, "ITRW_ARROW", 25);
 
-			applyPlayerOverlay(id, Mds.id("HUMANS_RELAXED.MDS"));
+			setWalkOverlay(id, "HUMANS_RELAXED.MDS");
 		}
 	}
 ]
